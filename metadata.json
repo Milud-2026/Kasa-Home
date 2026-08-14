@@ -1,0 +1,6 @@
+{
+  "name": "Kasa & Home - Objets & Déco Pour La Maison",
+  "description": "Boutique en ligne complète pour la maison: décoration, art de la table, luminaires, rangement, linge de maison et accessoires d'intérieur.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
