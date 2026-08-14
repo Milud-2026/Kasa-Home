@@ -31,23 +31,28 @@ export const OrderConfirmationModal: React.FC<OrderConfirmationModalProps> = ({ 
           <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shadow-inner mb-1">
             <CheckCircle className="w-10 h-10 stroke-[2.5]" />
           </div>
-          <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
-            Commande Validée & Notification Envoyée !
+          <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200">
+            Commande Reçue avec Succès !
           </span>
-          <h2 className="font-serif text-2xl font-bold text-stone-900">
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900">
             Merci {order.customerName.split(' ')[0]} !
           </h2>
-          <p className="text-stone-600 text-xs sm:text-sm max-w-sm">
-            Votre commande <strong className="text-stone-900 font-mono">{order.orderId}</strong> pour <strong>{prodName}</strong> a bien été enregistrée. Notre équipe logistique va vous contacter incessamment au <strong className="text-stone-900">{order.phone}</strong> pour confirmer votre livraison.
+          <p className="text-stone-600 text-xs sm:text-sm max-w-md">
+            Votre commande <strong className="text-stone-900 font-mono">#{order.orderId}</strong> pour <strong>{prodName}</strong> a été enregistrée avec succès.
           </p>
         </div>
 
-        {/* Email Notification Dispatch Status Banner */}
-        <div className="mt-4 bg-amber-50 p-3 rounded-xl border border-amber-200/80 text-[11px] text-amber-950 flex items-center gap-2">
-          <span className="text-base">📧</span>
-          <span>
-            Les détails complets de votre commande ont été transmis directement à l'adresse <strong>miludessaula123@gmail.com</strong> ainsi que dans le panneau d'administration.
-          </span>
+        {/* Contact Next Steps Box */}
+        <div className="mt-4 bg-emerald-50/90 rounded-2xl p-4 border border-emerald-200/80 text-xs text-emerald-950 flex items-start gap-3">
+          <div className="w-8 h-8 rounded-full bg-emerald-200/80 text-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+            <Phone className="w-4 h-4" />
+          </div>
+          <div className="flex-1">
+            <h4 className="font-bold text-emerald-900 text-xs uppercase tracking-wide">Prochaine étape :</h4>
+            <p className="mt-1 text-stone-700 leading-relaxed">
+              Notre équipe logistique va vous contacter dans les plus brefs délais au <strong className="text-stone-900 font-bold">{order.phone}</strong> pour valider les détails et planifier la livraison à domicile.
+            </p>
+          </div>
         </div>
 
         {/* Order Details Card */}
@@ -121,7 +126,7 @@ export const OrderConfirmationModal: React.FC<OrderConfirmationModalProps> = ({ 
             onClick={onClose}
             className="w-full bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold py-2.5 px-4 rounded-xl text-xs transition-colors cursor-pointer"
           >
-            Retourner à la boutique Mon Habitat
+            Continuer mes achats sur Kasa & Home
           </button>
         </div>
       </div>

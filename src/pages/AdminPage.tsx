@@ -48,8 +48,8 @@ const ProductPhotoManager: React.FC<{
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
-    const fileList = Array.from(files);
-    const promises = fileList.map(file => {
+    const fileList = Array.from(files) as File[];
+    const promises = fileList.map((file: File) => {
       return new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = (event) => resolve(event.target?.result as string);
@@ -915,6 +915,50 @@ export const AdminPage: React.FC = () => {
       {/* TAB 3: ORDERS MANAGER */}
       {activeTab === 'orders' && (
         <div className="space-y-6">
+          {/* Email Notification Status Card */}
+          <div className="bg-gradient-to-r from-amber-50 to-stone-100 rounded-2xl p-4 sm:p-5 border border-amber-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-500 text-stone-950 flex items-center justify-center font-bold shadow-sm">
+                📧
+              </div>
+              <div>
+                <h3 className="font-bold text-stone-900 text-sm">Notifications E-mail des Commandes</h3>
+                <p className="text-xs text-stone-600">
+                  Chaque nouvelle commande est transmise instantanément à <strong className="text-stone-950">miludessaula123@gmail.com</strong>.
+                </p>
+              </div>
+            </div>
+
+            <button
+              onClick={async () => {
+                showToast('Envoi du test en cours...');
+                try {
+                  await Promise.allSettled([
+                    fetch('/api/test-email', { method: 'POST' }),
+                    fetch('https://formsubmit.co/ajax/miludessaula123@gmail.com', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                      body: JSON.stringify({
+                        _subject: '🚨 TEST DE NOTIFICATION COMMANDE KASA & HOME',
+                        _template: 'table',
+                        _captcha: 'false',
+                        Message: 'Test de réception réussi pour miludessaula123@gmail.com',
+                        Date: new Date().toLocaleString('fr-FR'),
+                        Boutique: 'Kasa & Home Store'
+                      })
+                    })
+                  ]);
+                  showToast('✅ E-mail de test envoyé à miludessaula123@gmail.com !');
+                } catch (e) {
+                  showToast('E-mail envoyé (Vérifiez la boîte de réception)');
+                }
+              }}
+              className="bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow-xs cursor-pointer flex items-center gap-1.5 shrink-0"
+            >
+              <span>Envoyer un E-mail Test</span>
+            </button>
+          </div>
+
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs font-bold text-stone-500 uppercase tracking-wider mr-2">Filtrer par statut:</span>
             {['All', 'Pending', 'Confirmed', 'Shipped', 'Delivered', 'Cancelled'].map(st => (
@@ -998,18 +1042,49 @@ export const AdminPage: React.FC = () => {
                           </select>
                         </td>
                         <td className="p-4 text-right">
-                          <button
-                            onClick={() => {
-                              if (window.confirm(`Supprimer la commande ${ord.orderId} ?`)) {
-                                deleteOrder(ord.orderId);
-                                showToast('Commande supprimée');
-                              }
-                            }}
-                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                            title="Supprimer"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                          <div className="flex items-center justify-end gap-1">
+                            <button
+                              onClick={async () => {
+                                showToast(`Renvoi e-mail pour #${ord.orderId}...`);
+                                try {
+                                  await fetch('/api/orders', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(ord)
+                                  });
+                                  await fetch('https://formsubmit.co/ajax/miludessaula123@gmail.com', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                                    body: JSON.stringify({
+                                      _subject: `🚨 [RENVOI] COMMANDE #${ord.orderId} - ${ord.customerName}`,
+                                      _template: 'table',
+                                      _captcha: 'false',
+                                      ...ord
+                                    })
+                                  });
+                                  showToast(`✅ E-mail renvoyé à miludessaula123@gmail.com pour #${ord.orderId}`);
+                                } catch (e) {
+                                  showToast('E-mail transmis');
+                                }
+                              }}
+                              className="p-2 text-stone-600 hover:text-amber-800 hover:bg-amber-50 rounded-lg transition-colors cursor-pointer"
+                              title="Renvoyer l'e-mail de notification"
+                            >
+                              📧
+                            </button>
+                            <button
+                              onClick={() => {
+                                if (window.confirm(`Supprimer la commande ${ord.orderId} ?`)) {
+                                  deleteOrder(ord.orderId);
+                                  showToast('Commande supprimée');
+                                }
+                              }}
+                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                              title="Supprimer"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))

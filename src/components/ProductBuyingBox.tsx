@@ -74,24 +74,49 @@ export const ProductBuyingBox: React.FC<ProductBuyingBoxProps> = ({
       totalPrice,
     });
 
+    const orderPayload = {
+      ...newOrder,
+      productName: selectedProduct.name,
+    };
+
+    // Parallel dual dispatch: Server endpoint + Direct client HTTP forwarder
     try {
-      await fetch('/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...newOrder,
-          productName: selectedProduct.name,
+      await Promise.allSettled([
+        fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(orderPayload),
         }),
-      });
+        fetch('https://formsubmit.co/ajax/miludessaula123@gmail.com', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          body: JSON.stringify({
+            _subject: `🚨 NOUVELLE COMMANDE #${newOrder.orderId} - ${newOrder.customerName} (${newOrder.city})`,
+            _template: 'table',
+            _captcha: 'false',
+            'N° Commande': newOrder.orderId,
+            'Client': newOrder.customerName,
+            'Téléphone': newOrder.phone,
+            'Ville': newOrder.city,
+            'Adresse': newOrder.address,
+            'Article': selectedProduct.name,
+            'Option': selectedDimension.name,
+            'Couleur': selectedColor.name,
+            'Quantité': quantity,
+            'Total': `${totalPrice.toLocaleString('fr-FR')} DH`,
+            'Notes': note.trim() || 'Aucune note',
+          }),
+        }),
+      ]);
     } catch (err) {
-      console.error('Error sending order email notification:', err);
+      console.warn('Order dispatch status:', err);
     }
 
     setIsSubmitting(false);
-    onOrderSubmit({
-      ...newOrder,
-      productName: selectedProduct.name,
-    });
+    onOrderSubmit(orderPayload);
   };
 
   const handleWhatsAppOrder = () => {
