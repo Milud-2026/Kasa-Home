@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <defs>
+    <linearGradient id="khGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE68A" />
+      <stop offset="40%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+    <linearGradient id="khDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#292524" />
+      <stop offset="100%" stop-color="#1C1917" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background Rounded Shield -->
+  <rect x="4" y="4" width="120" height="120" rx="30" fill="url(#khDark)" stroke="#F59E0B" stroke-width="3.5" />
+  
+  <!-- Stylized House Roof Arch -->
+  <path d="M64 24 L100 54 L90 54 L64 34 L38 54 L28 54 Z" fill="url(#khGold)" />
+  
+  <!-- House / Furniture Interior Structure -->
+  <path d="M40 56 L88 56 L88 94 C88 98 84 102 80 102 L48 102 C44 102 40 98 40 94 Z" fill="none" stroke="url(#khGold)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- 'K & H' Central Stylized Architectural Monogram -->
+  <!-- K Pillar -->
+  <line x1="52" y1="66" x2="52" y2="92" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" />
+  <line x1="52" y1="78" x2="63" y2="67" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" />
+  <line x1="52" y1="77" x2="63" y2="92" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" />
+  
+  <!-- Luxury Sparkle Top Right -->
+  <path d="M96 28 Q96 34 102 34 Q96 34 96 40 Q96 34 90 34 Q96 34 96 28 Z" fill="#FDE68A" />
+  
+  <!-- Interior Horizon Line -->
+  <line x1="42" y1="84" x2="86" y2="84" stroke="url(#khGold)" stroke-width="2" stroke-opacity="0.6" />
+</svg>
